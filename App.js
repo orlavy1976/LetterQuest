@@ -4,8 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import LetterComponent from './components/LetterComponent';
 import { GlobalProvider } from './context/GlobalContext';
 
+
+
 export default function App() {
-  console.log("rendering App.js");
   return (
     <GlobalProvider>
       <View style={styles.container}>
@@ -23,7 +24,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ddd',
     alignItems: 'center',
     justifyContent: 'center',
   },

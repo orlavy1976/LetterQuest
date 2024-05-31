@@ -23,7 +23,6 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
     let timer;
     if (correct === false) {
       timer = setTimeout(() => {
-        console.log("setting correct to null after timeout", index);
         setCorrect(null);
       }, 1000);
     }
@@ -40,13 +39,11 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log("setting correct to null on focus", index);
       setCorrect(null);
     }
   }, [isFocused]);
 
   const handleSubmit = () => {
-    console.log("handling submit", index, input, expectedLetter);
     if (input.toLowerCase() === expectedLetter.toLowerCase()) {
       setCorrect(true);
       setIsFocused(false);
@@ -60,7 +57,6 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
     submitLetter(index, input);
   };
 
-  console.log("rendering LetterComponent", { index, expectedLetter, isFocused, correct, shakeAnimation: shakeAnimation.current });
 
   return (
     <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
