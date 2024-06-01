@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LetterComponent from './LetterComponent';
 
-const WordComponent = ({ word, wordIndex, letterNumberMap, focusedIndex, onCorrect }) => {
+const WordComponent = ({ word, wordIndex, letterNumberMap, focusedIndex }) => {
   return (
     <View style={styles.wordContainer}>
       {word.split('').map((char, index) => {

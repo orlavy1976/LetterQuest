@@ -1,9 +1,9 @@
-import React, { forwardRef, useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 
-const LetterComponent = forwardRef(({ index, number, isFocused }, ref) => {
+const LetterComponent = ({ index, number, isFocused }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
   const { correct, letter } = state.letters[index];
@@ -51,7 +51,7 @@ const LetterComponent = forwardRef(({ index, number, isFocused }, ref) => {
       <Text style={styles.number}>{number}</Text>
     </TouchableOpacity>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {

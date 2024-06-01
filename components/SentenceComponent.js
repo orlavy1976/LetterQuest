@@ -80,7 +80,9 @@ const SentenceComponent = ({ onComplete }) => {
     if (state.focusedIndex !== null) {
       const correct = letter.toLowerCase() === state.sentence[state.focusedIndex].toLowerCase();
       dispatch({ type: 'SET_LETTER', index: state.focusedIndex, letter, correct });
-      focusOnNextLetter(state.focusedIndex);
+      if (correct) {
+        focusOnNextLetter(state.focusedIndex);
+      }
     }
   };
 
