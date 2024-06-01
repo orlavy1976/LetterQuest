@@ -5,11 +5,18 @@ const initialState = {
   letters: {},
   focusedIndex: null,
   usedQuotes: [],
+  letterOccurrences: {},
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_SENTENCE':
+      const letterOccurrences = {};
+      action.sentence.split('').forEach(letter => {
+        if (letter !== ' ') {
+          letterOccurrences[letter.toLowerCase()] = (letterOccurrences[letter.toLowerCase()] || 0) + 1;
+        }
+      });
       return {
         ...state,
         sentence: action.sentence,
@@ -21,9 +28,14 @@ const reducer = (state, action) => {
           return acc;
         }, {}),
         focusedIndex: null,
+        letterOccurrences
       };
     case 'SET_LETTER':
       console.log('SET_LETTER', action);
+      const updatedOccurrences = { ...state.letterOccurrences };
+      if (action.correct) {
+        updatedOccurrences[action.letter.toLowerCase()]--;
+      }
       return {
         ...state,
         letters: {
@@ -34,6 +46,7 @@ const reducer = (state, action) => {
             letter: action.letter
           }
         },
+        letterOccurrences: updatedOccurrences,
       };
     case 'SET_FOCUSED_INDEX':
       return {

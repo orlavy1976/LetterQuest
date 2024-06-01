@@ -59,15 +59,10 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 5,
     borderRadius: 5,
-    elevation: 2,
-    shadowColor: colors.onSurface,
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    backgroundColor: colors.letterBackground
+    backgroundColor: '#FFE4C4', // A warm, light beige
   },
   focusedContainer: {
-    backgroundColor: colors.letterFocused,
+    backgroundColor: '#FFCC80', // A brighter color for focused state
   },
   input: {
     height: 25,
@@ -75,6 +70,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     lineHeight: 25,
+    fontWeight: 'bold',
   },
   correctInput: {
     color: colors.letterCorrect,
@@ -93,5 +89,6 @@ const styles = StyleSheet.create({
     color: colors.onSurface,
   },
 });
+
 
 export default LetterComponent;

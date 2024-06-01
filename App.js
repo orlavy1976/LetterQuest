@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background, // Ensure background color is set
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     marginBottom: 20,
-    marginTop: 30,
+    marginTop: 50,
     color: colors.primary, // Use primary color for the title
   },
 });

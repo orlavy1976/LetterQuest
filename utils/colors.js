@@ -1,20 +1,19 @@
 const colors = {
-  primary: '#6200ea',
-  primaryVariant: '#3700b3',
-  secondary: '#03dac6',
-  secondaryVariant: '#018786',
-  background: '#e0f7fa', // Light cyan background for a fresher look
-  surface: '#ffffff',
-  error: '#b00020',
-  onPrimary: '#ffffff',
+  primary: '#FF6F61', // A bright, warm red-orange
+  primaryVariant: '#FF3D00', // A more intense red
+  secondary: '#FFD700', // A vivid yellow
+  secondaryVariant: '#FFA500', // A bright orange
+  background: '#FFF8E1', // A light, warm cream
+  surface: '#FFE4C4', // A warm, light beige
+  error: '#D32F2F',
+  onPrimary: '#FFFFFF',
   onSecondary: '#000000',
   onBackground: '#000000',
   onSurface: '#000000',
-  onError: '#ffffff',
-  letterCorrect: '#4caf50',
-  letterIncorrect: '#f44336',
-  letterFocused: '#ffeb3b',
-  letterBackground: '#e8fafa'
+  onError: '#FFFFFF',
+  letterCorrect: '#4CAF50', // A bright green for correct letters
+  letterIncorrect: '#F44336', // A bright red for incorrect letters
+  letterFocused: '#FFEB3B', // A bright yellow for focused letters
 };
 
 export default colors;

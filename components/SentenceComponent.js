@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: 10,
-    paddingTop: 100,
+    paddingTop: 30,
     paddingBottom: 100,
   },
 
