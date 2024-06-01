@@ -9,81 +9,79 @@ import LetterComponent from './LetterComponent';
 
 I18nManager.forceRTL(true);
 
-const SentenceComponent = ({ sentence, onComplete }) => {
+const SentenceComponent = ({ onComplete }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const [letterNumberMap, setLetterNumberMap] = useState({});
-  const [focusedIndex, setFocusedIndex] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const letterRefs = useRef([]);
   const animationRef = useRef(null);
 
   useEffect(() => {
-    console.log("sentence", sentence);
-    setLetterNumberMap(generateRandomNumbers(sentence));
+    console.log('SentenceComponent useEffect', state.sentence);
+    setLetterNumberMap(generateRandomNumbers(state.sentence));
     setRandomCorrectLetters();
-    letterRefs.current.forEach(ref => {
-      if (ref) ref.blur();
-    });
-    setFocusedIndex(null);
-  }, [sentence]);
+  }, [state.sentence]);
+
+  useEffect(() => {
+    if (!state.letters) return;
+    if (Object.keys(state.letters).length === 0) return;
+    checkIfComplete();
+  }, [state.letters]);
 
   const setRandomCorrectLetters = () => {
-    const numHints = Math.ceil(sentence.replace(/ /g, '').length * 0.2); // 20% of the letters
-    const indices = Array.from(Array(sentence.length).keys()).filter(i => sentence[i] !== ' ');
+    const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * 0.2); // 20% of the letters
+    const indices = Array.from(Array(state.sentence.length).keys()).filter(i => state.sentence[i] !== ' ');
     const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
 
     shuffledIndices.forEach(index => {
-      if (letterRefs.current[index]) {
-        letterRefs.current[index].setInitialLetter(sentence[index]);
-      }
+      dispatch({ type: 'SET_LETTER', index, letter: state.sentence[index], correct: true });
     });
   };
 
   const focusOnNextLetter = (index) => {
     const nextIndex = findNextIndex(index);
+    console.log('focusOnNextLetter', index, nextIndex);
     if (nextIndex !== -1) {
-      setFocusedIndex(nextIndex);
-      if (letterRefs.current[nextIndex] && letterRefs.current[nextIndex].focus) {
-        letterRefs.current[nextIndex].focus();
-      }
+      dispatch({ type: 'SET_FOCUSED_INDEX', index: nextIndex });
     }
-    checkIfComplete(index);
   };
 
   const findNextIndex = (currentIndex) => {
-    for (let i = currentIndex + 1; i < sentence.length; i++) {
-      if (sentence[i] !== ' ' && !letterRefs.current[i].isCorrect()) {
+    for (let i = currentIndex + 1; i < state.sentence.length; i++) {
+      if (state.sentence[i] !== ' ' && !state.letters[i].letter) {
         return i;
       }
     }
     for (let i = 0; i < currentIndex; i++) {
-      if (sentence[i] !== ' ' && !letterRefs.current[i].isCorrect()) {
+      if (state.sentence[i] !== ' ' && !state.letters[i].letter) {
         return i;
       }
     }
     return -1;
   };
 
-  const checkIfComplete = (index) => {
-    const lettersToCheck = letterRefs.current.filter((_, i) => index !== i);
-    if (lettersToCheck.every(ref => ref && ref.isCorrect())) {
+  const checkIfComplete = () => {
+    const allCorrect = Object.keys(state.letters).every(i => state.letters[i] === ' ' ? true : state.letters[i].correct);
+    console.log('checkIfComplete', allCorrect, state.letters);
+    if (allCorrect) {
       handleSentenceComplete();
     }
   };
 
   const handleSentenceComplete = () => {
+    console.log('handleSentenceComplete');
     setShowSuccess(true);
     animationRef.current?.play();
     setTimeout(() => {
       setShowSuccess(false);
-      if (onComplete) onComplete(sentence);
+      if (onComplete) onComplete(state.sentence);
     }, 3000);
   };
 
   const handleKeyPress = (letter) => {
-    if (focusedIndex !== null && letterRefs.current[focusedIndex]) {
-      letterRefs.current[focusedIndex].setLetter(letter);
-      dispatch({ type: 'SET_LETTER', index: focusedIndex, letter });
+    if (state.focusedIndex !== null) {
+      const correct = letter.toLowerCase() === state.sentence[state.focusedIndex].toLowerCase();
+      dispatch({ type: 'SET_LETTER', index: state.focusedIndex, letter, correct });
+      focusOnNextLetter(state.focusedIndex);
     }
   };
 
@@ -94,36 +92,32 @@ const SentenceComponent = ({ sentence, onComplete }) => {
     >
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.sentenceContainer}>
-          {sentence.split('').map((char, index) => {
+          {state.sentence.split('').map((char, index) => {
             if (char === ' ') {
               return <View key={index} style={styles.space} />;
             }
             const lowerChar = char.toLowerCase();
             return (
               <LetterComponent
-                ref={el => letterRefs.current[index] = el}
                 key={index}
                 index={index}
                 expectedLetter={char}
                 number={letterNumberMap[lowerChar]}
-                isFocused={focusedIndex === index}
+                isFocused={state.focusedIndex === index}
                 onCorrect={() => focusOnNextLetter(index)}
-                onFocus={() => setFocusedIndex(index)}
               />
             );
           })}
         </View>
       </ScrollView>
       <KeyboardComponent onPress={handleKeyPress} />
-      {showSuccess && (
-        <LottieView
-          ref={animationRef}
-          source={require('../assets/success.json')}
-          autoPlay
-          loop={false}
-          style={styles.animation}
-        />
-      )}
+      {showSuccess && (<LottieView
+        ref={animationRef}
+        source={require('../assets/success.json')}
+        autoPlay
+        loop={false}
+        style={styles.animation}
+      />)}
     </KeyboardAvoidingView>
   );
 };

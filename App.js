@@ -10,23 +10,23 @@ function App() {
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * quotes.length);
-    dispatch({ type: 'SET_RANDOM_QUOTE', quote: quotes[randomIndex] });
+    dispatch({ type: 'SET_SENTENCE', sentence: quotes[randomIndex] });
   }, [dispatch]);
 
   useEffect(() => {
     const leftQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
     const randomIndex = Math.floor(Math.random() * leftQuotes.length);
-    dispatch({ type: 'SET_RANDOM_QUOTE', quote: leftQuotes[randomIndex] });
+    dispatch({ type: 'SET_SENTENCE', sentence: leftQuotes[randomIndex] });
   }, [state.usedQuotes, dispatch]);
 
   const onComplete = (sentence) => {
     dispatch({ type: 'SET_USED_QUOTES', quote: sentence });
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>LetterQuest Game</Text>
-      <SentenceComponent sentence={state.randomQuote} onComplete={onComplete} />
+      <SentenceComponent onComplete={onComplete} />
       <StatusBar style="auto" />
     </View>
   );

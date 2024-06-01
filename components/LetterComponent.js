@@ -1,81 +1,55 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 
-const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, onCorrect, onFocus }, ref) => {
-  const { dispatch } = useContext(GlobalContext);
-  const [input, setInput] = useState('');
-  const [correct, setCorrect] = useState(null); // null, true, false
-  const [isComponentFocused, setIsComponentFocused] = useState(false);
+const LetterComponent = forwardRef(({ index, number, isFocused }, ref) => {
+  const { state, dispatch } = useContext(GlobalContext);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
+  const { correct, letter } = state.letters[index];
 
   useEffect(() => {
     let timer;
     if (correct === false) {
+      showIncorrectAnimation();
       timer = setTimeout(() => {
-        setInput('');
-        setCorrect(null);
+        dispatch({ type: 'SET_LETTER', index, letter: '', correct: null });
       }, 1000);
     }
     return () => clearTimeout(timer);
   }, [correct]);
 
-  useEffect(() => {
-    if (isFocused) {
-      setIsComponentFocused(true);
-    } else {
-      setIsComponentFocused(false);
-    }
-  }, [isFocused]);
-
   useImperativeHandle(ref, () => ({
     focus: () => {
-      setIsComponentFocused(true);
+      dispatch({ type: 'SET_FOCUSED_INDEX', index });
     },
     blur: () => {
-      setIsComponentFocused(false);
+      dispatch({ type: 'SET_FOCUSED_INDEX', index: null });
     },
-    isFocused: () => isComponentFocused,
-    setLetter: (letter) => handleLetterInput(letter),
-    setInitialLetter: (letter) => {
-      setInput(letter);
-      setCorrect(true);
-    },
-    isCorrect: () => correct === true,
   }));
 
-  const handleLetterInput = (letter) => {
-    if (letter.toLowerCase() === expectedLetter.toLowerCase()) {
-      setInput(letter);
-      setCorrect(true);
-      setIsComponentFocused(false);
-      if (onCorrect) onCorrect(index);
-    } else {
-      setInput(letter);
-      setCorrect(false);
-      Animated.sequence([
-        Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver: true }),
-      ]).start();
-    }
-    dispatch({ type: 'SET_LETTER', index, letter });
-  };
+  const showIncorrectAnimation = () => {
+    Animated.sequence([
+      Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver: true }),
+    ]).start();
+  }
+
+  console.log('LetterComponent render', index, state.letters[index]);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        if (!isComponentFocused) {
-          setIsComponentFocused(true);
-          if (onFocus) onFocus(index);
+        if (!isFocused) {
+          dispatch({ type: 'SET_FOCUSED_INDEX', index });
         }
       }}
       style={[
         styles.container,
-        isComponentFocused && styles.focusedContainer,
+        isFocused && styles.focusedContainer,
         { transform: [{ translateX: shakeAnimation }] }
       ]}
     >
@@ -83,7 +57,7 @@ const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, 
         styles.input,
         correct === true && styles.correctInput,
         correct === false && styles.incorrectInput
-      ]}>{input}</Text>
+      ]}>{letter}</Text>
       <View style={styles.line} />
       <Text style={styles.number}>{number}</Text>
     </TouchableOpacity>
