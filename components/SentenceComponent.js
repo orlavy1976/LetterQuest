@@ -5,7 +5,7 @@ import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 import generateRandomNumbers from '../utils/generateRandomNumbers';
 import KeyboardComponent from './KeyboardComponent';
-import LetterComponent from './LetterComponent';
+import WordComponent from './WordComponent';
 
 I18nManager.forceRTL(true);
 
@@ -61,7 +61,6 @@ const SentenceComponent = ({ onComplete }) => {
 
   const checkIfComplete = () => {
     const allCorrect = Object.keys(state.letters).every(i => state.letters[i] === ' ' ? true : state.letters[i].correct);
-    console.log('checkIfComplete', allCorrect, state.letters);
     if (allCorrect) {
       handleSentenceComplete();
     }
@@ -85,6 +84,18 @@ const SentenceComponent = ({ onComplete }) => {
     }
   };
 
+  const renderSentence = () => {
+    return state.sentence.split(' ').map((word, wordIndex) => (
+      <WordComponent
+        key={wordIndex}
+        word={word}
+        wordIndex={state.sentence.indexOf(word)}
+        letterNumberMap={letterNumberMap}
+        focusedIndex={state.focusedIndex}
+      />
+    ));
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -92,22 +103,7 @@ const SentenceComponent = ({ onComplete }) => {
     >
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.sentenceContainer}>
-          {state.sentence.split('').map((char, index) => {
-            if (char === ' ') {
-              return <View key={index} style={styles.space} />;
-            }
-            const lowerChar = char.toLowerCase();
-            return (
-              <LetterComponent
-                key={index}
-                index={index}
-                expectedLetter={char}
-                number={letterNumberMap[lowerChar]}
-                isFocused={state.focusedIndex === index}
-                onCorrect={() => focusOnNextLetter(index)}
-              />
-            );
-          })}
+          {renderSentence()}
         </View>
       </ScrollView>
       <KeyboardComponent onPress={handleKeyPress} />
@@ -134,15 +130,19 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     paddingBottom: 100,
   },
+
   sentenceContainer: {
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     justifyContent: 'center',
     padding: 10,
+    alignItems: 'center', // Ensure items are centered
+    flexShrink: 1, // Prevent words from breaking between lines
   },
   space: {
     width: 10,
-    flexBasis: '100%',
+    flexBasis: 10, // Ensure the space only takes the necessary width
+    flexShrink: 0, // Prevent the space from shrinking and causing line breaks
   },
   animation: {
     position: 'absolute',

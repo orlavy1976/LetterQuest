@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useContext, useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
@@ -19,15 +19,6 @@ const LetterComponent = forwardRef(({ index, number, isFocused }, ref) => {
     return () => clearTimeout(timer);
   }, [correct]);
 
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      dispatch({ type: 'SET_FOCUSED_INDEX', index });
-    },
-    blur: () => {
-      dispatch({ type: 'SET_FOCUSED_INDEX', index: null });
-    },
-  }));
-
   const showIncorrectAnimation = () => {
     Animated.sequence([
       Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
@@ -37,8 +28,6 @@ const LetterComponent = forwardRef(({ index, number, isFocused }, ref) => {
       Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver: true }),
     ]).start();
   }
-
-  console.log('LetterComponent render', index, state.letters[index]);
 
   return (
     <TouchableOpacity
@@ -69,13 +58,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 5,
     padding: 5,
-    backgroundColor: colors.surface,
     borderRadius: 5,
     elevation: 2,
     shadowColor: colors.onSurface,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
+    backgroundColor: colors.letterBackground
   },
   focusedContainer: {
     backgroundColor: colors.letterFocused,

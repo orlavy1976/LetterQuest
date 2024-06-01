@@ -14,6 +14,7 @@ const colors = {
   letterCorrect: '#4caf50',
   letterIncorrect: '#f44336',
   letterFocused: '#ffeb3b',
+  letterBackground: '#e8fafa'
 };
 
 export default colors;
