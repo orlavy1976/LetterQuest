@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useEffect, useReducer } from 'react';
 
 const initialState = {
   sentence: '',
@@ -54,9 +55,12 @@ const reducer = (state, action) => {
         focusedIndex: action.index,
       };
     case 'SET_USED_QUOTES':
+      const updatedUsedQuotes = [...state.usedQuotes, action.quote];
+      AsyncStorage.setItem('usedQuotes', JSON.stringify(updatedUsedQuotes)); // Save to AsyncStorage
+
       return {
         ...state,
-        usedQuotes: [...state.usedQuotes, action.quote],
+        usedQuotes: updatedUsedQuotes,
       };
     default:
       return state;
@@ -67,6 +71,21 @@ export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const loadUsedQuotes = async () => {
+      try {
+        const storedUsedQuotes = await AsyncStorage.getItem('usedQuotes');
+        console.log('storedUsedQuotes', storedUsedQuotes);
+        if (storedUsedQuotes) {
+          dispatch({ type: 'INITIALIZE_USED_QUOTES', usedQuotes: JSON.parse(storedUsedQuotes) });
+        }
+      } catch (error) {
+        console.error('Failed to load used quotes from storage', error);
+      }
+    };
+    loadUsedQuotes();
+  }, []);
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

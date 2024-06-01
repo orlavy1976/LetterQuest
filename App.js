@@ -10,14 +10,18 @@ function App() {
   const { state, dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    dispatch({ type: 'SET_SENTENCE', sentence: quotes[randomIndex] });
-  }, [dispatch]);
+    if (state.usedQuotes.length === 0) {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      dispatch({ type: 'SET_SENTENCE', sentence: quotes[randomIndex] });
+    }
+  }, [dispatch, state.usedQuotes.length]);
 
   useEffect(() => {
-    const leftQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
-    const randomIndex = Math.floor(Math.random() * leftQuotes.length);
-    dispatch({ type: 'SET_SENTENCE', sentence: leftQuotes[randomIndex] });
+    if (state.usedQuotes.length > 0) {
+      const leftQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
+      const randomIndex = Math.floor(Math.random() * leftQuotes.length);
+      dispatch({ type: 'SET_SENTENCE', sentence: leftQuotes[randomIndex] });
+    }
   }, [state.usedQuotes, dispatch]);
 
   const onComplete = (sentence) => {

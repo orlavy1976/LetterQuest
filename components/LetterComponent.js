@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFCC80', // A brighter color for focused state
   },
   input: {
-    height: 25,
-    width: 25,
+    height: 20,
+    width: 20,
     textAlign: 'center',
     fontSize: 18,
-    lineHeight: 25,
+    lineHeight: 20,
     fontWeight: 'bold',
   },
   correctInput: {
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 2,
-    width: 25,
+    width: 20,
     backgroundColor: colors.onSurface,
     marginVertical: 5,
   },
