@@ -1,145 +1,126 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
+import colors from '../utils/colors';
 
-const LetterComponent = forwardRef(({ index, expectedLetter, number, onCorrect }, ref) => {
+const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, onCorrect, onFocus }, ref) => {
   const { submitLetter } = useContext(GlobalContext);
   const [input, setInput] = useState('');
   const [correct, setCorrect] = useState(null); // null, true, false
-  const [isFocused, setIsFocused] = useState(false);
+  const [isComponentFocused, setIsComponentFocused] = useState(false);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const inputRef = useRef(null);
-  const preventBlur = useRef(false);
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 5000,
-      useNativeDriver: true,
-    }).start();
-  }, [fadeAnim]);
 
   useEffect(() => {
     let timer;
     if (correct === false) {
       timer = setTimeout(() => {
+        setInput('');
         setCorrect(null);
       }, 1000);
     }
     return () => clearTimeout(timer);
   }, [correct]);
 
-  const shakeRight = (value) => {
-    return Animated.timing(shakeAnimation, { toValue: 1, duration: 50, useNativeDriver: true })
-  }
-
-  const shakeLeft = (value) => {
-    return Animated.timing(shakeAnimation, { toValue: -1, duration: 50, useNativeDriver: true })
-  }
-
   useEffect(() => {
     if (isFocused) {
-      setCorrect(null);
+      setIsComponentFocused(true);
+    } else {
+      setIsComponentFocused(false);
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    handleSubmit();
-  }, [input]);
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      setIsComponentFocused(true);
+    },
+    isFocused: () => isComponentFocused,
+    setLetter: (letter) => handleLetterInput(letter),
+    isCorrect: () => correct === true,
+  }));
 
-  const handleSubmit = () => {
-    if (!input) { return; }
-    console.log("submitting letter", index, input);
-    if (input.toLowerCase() === expectedLetter.toLowerCase()) {
+  const handleLetterInput = (letter) => {
+    if (letter.toLowerCase() === expectedLetter.toLowerCase()) {
+      setInput(letter);
       setCorrect(true);
-      setIsFocused(false);
-      onCorrect(index);
+      setIsComponentFocused(false);
+      if (onCorrect) onCorrect();
     } else {
+      setInput(letter);
       setCorrect(false);
       Animated.sequence([
-        shakeRight(), shakeLeft(), shakeRight(), shakeLeft(), shakeRight(), shakeLeft(),
+        Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver: true }),
         Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver: true }),
       ]).start();
     }
-    submitLetter(index, input);
-  };
-
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      if (!inputRef.current) { return; }
-      preventBlur.current = true;
-      console.log('focus', index);
-      inputRef.current.focus();
-      setTimeout(() => {
-        console.log('forcing focus', index);
-        inputRef.current.focus(); // Force the keyboard to open
-      }, 200); // Add a slight delay to ensure the input is focused
-    }
-  }));
-
-  const handleBlur = () => {
-    console.log('handleBlur', { preventBlur: preventBlur.current });
-    if (preventBlur.current) {
-      preventBlur.current = false;
-      return;
-    }
-    setIsFocused(false);
+    submitLetter(index, letter);
   };
 
   return (
-    <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
-      <View style={[styles.container, isFocused && styles.focusedContainer]}>
-        {correct ?
-          <Text style={styles.input}>{input}</Text>
-          : <TextInput
-            ref={inputRef}
-            style={[styles.input, correct === false && styles.incorrectInput]}
-            value={correct ? input : ''}
-            onChangeText={setInput}
-            maxLength={1}
-            cursorColor="transparent"
-            onFocus={() => setIsFocused(true)}
-            onBlur={handleBlur}
-          />
+    <TouchableOpacity
+      onPress={() => {
+        if (!isComponentFocused) {
+          setIsComponentFocused(true);
+          if (onFocus) onFocus(index);
         }
-        <View style={styles.line} />
-        <Text style={styles.number}>{number}</Text>
-      </View>
-    </Animated.View>
-
+      }}
+      style={[
+        styles.container,
+        isComponentFocused && styles.focusedContainer,
+        { transform: [{ translateX: shakeAnimation }] }
+      ]}
+    >
+      <Text style={[
+        styles.input,
+        correct === true && styles.correctInput,
+        correct === false && styles.incorrectInput
+      ]}>{input}</Text>
+      <View style={styles.line} />
+      <Text style={styles.number}>{number}</Text>
+    </TouchableOpacity>
   );
 });
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    margin: 2,
+    margin: 5,
+    padding: 5, // Decreased padding
+    backgroundColor: colors.surface,
+    borderRadius: 5,
+    elevation: 2, // Android shadow
+    shadowColor: colors.onSurface, // iOS shadow
+    shadowOffset: { width: 1, height: 1 }, // iOS shadow
+    shadowOpacity: 0.3, // iOS shadow
+    shadowRadius: 2, // iOS shadow
   },
   focusedContainer: {
-    backgroundColor: 'rgba(144, 238, 144, 0.3)', // Light green background
-    borderRadius: 5,
+    backgroundColor: colors.letterFocused, // Focused background color
   },
   input: {
-    height: 40,
-    width: 30,
-    borderColor: 'gray',
-    borderWidth: 1,
+    height: 25, // Decreased height
+    width: 25, // Decreased width
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18, // Decreased font size
+    lineHeight: 25, // Adjusted line height
+  },
+  correctInput: {
+    color: colors.letterCorrect,
+  },
+  incorrectInput: {
+    color: colors.letterIncorrect,
   },
   line: {
     height: 2,
-    width: 30,
-    backgroundColor: 'black',
+    width: 25, // Adjusted width
+    backgroundColor: colors.onSurface,
     marginVertical: 5,
   },
   number: {
-    fontSize: 18,
-    color: 'gray',
-  },
-  incorrectInput: {
-    borderColor: 'red',
+    fontSize: 16,
+    color: colors.onSurface,
   },
 });
 
