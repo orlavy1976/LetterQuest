@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 2, // Android shadow
-    shadowColor: colors.onSurface, // iOS shadow
-    shadowOffset: { width: 1, height: 1 }, // iOS shadow
-    shadowOpacity: 0.3, // iOS shadow
-    shadowRadius: 2, // iOS shadow
+    elevation: 2,
+    shadowColor: colors.onSurface,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   letter: {
     fontSize: 16,

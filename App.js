@@ -3,19 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SentenceComponent from './components/SentenceComponent';
 import { GlobalProvider } from './context/GlobalContext';
-//import quotes from './utils/quotes'; // Import the quotes array
-
-const quotes = [
-  'שלום עולם',
-  'כל הכבוד',
-];
+import quotes from './utils/quotes';
 
 function App() {
   const [randomQuote, setRandomQuote] = useState('');
   const [usedQuotes, setUsedQuotes] = useState([]);
 
   useEffect(() => {
-    // Select a random quote when the app starts
     const randomIndex = Math.floor(Math.random() * quotes.length);
     setRandomQuote(quotes[randomIndex]);
   }, []);

@@ -20,12 +20,8 @@ const SentenceComponent = ({ sentence, onComplete }) => {
     letterRefs.current.forEach(ref => {
       if (ref) ref.blur();
     });
-    setFocusedIndex(null); // Ensure no letter is focused initially
+    setFocusedIndex(null);
   }, [sentence]);
-
-  // useEffect(() => {
-  //   checkIfComplete();
-  // }, [letterRefs.current]);
 
   const setRandomCorrectLetters = () => {
     const numHints = Math.ceil(sentence.replace(/ /g, '').length * 0.2); // 20% of the letters
@@ -83,7 +79,7 @@ const SentenceComponent = ({ sentence, onComplete }) => {
     setTimeout(() => {
       setShowSuccess(false);
       if (onComplete) onComplete(sentence);
-    }, 3000); // Display the animation for 3 seconds
+    }, 3000);
   };
 
   const handleKeyPress = (letter) => {

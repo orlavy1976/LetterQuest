@@ -94,24 +94,24 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     margin: 5,
-    padding: 5, // Decreased padding
+    padding: 5,
     backgroundColor: colors.surface,
     borderRadius: 5,
-    elevation: 2, // Android shadow
-    shadowColor: colors.onSurface, // iOS shadow
-    shadowOffset: { width: 1, height: 1 }, // iOS shadow
-    shadowOpacity: 0.3, // iOS shadow
-    shadowRadius: 2, // iOS shadow
+    elevation: 2,
+    shadowColor: colors.onSurface,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   focusedContainer: {
-    backgroundColor: colors.letterFocused, // Focused background color
+    backgroundColor: colors.letterFocused,
   },
   input: {
-    height: 25, // Decreased height
-    width: 25, // Decreased width
+    height: 25,
+    width: 25,
     textAlign: 'center',
-    fontSize: 18, // Decreased font size
-    lineHeight: 25, // Adjusted line height
+    fontSize: 18,
+    lineHeight: 25,
   },
   correctInput: {
     color: colors.letterCorrect,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 2,
-    width: 25, // Adjusted width
+    width: 25,
     backgroundColor: colors.onSurface,
     marginVertical: 5,
   },
