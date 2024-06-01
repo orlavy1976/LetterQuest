@@ -3,11 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SentenceComponent from './components/SentenceComponent';
 import { GlobalProvider } from './context/GlobalContext';
-import colors from './utils/colors';
-import quotes from './utils/quotes'; // Import the quotes array
+//import quotes from './utils/quotes'; // Import the quotes array
 
-export default function App() {
+const quotes = [
+  'שלום עולם',
+  'כל הכבוד',
+];
+
+function App() {
   const [randomQuote, setRandomQuote] = useState('');
+  const [usedQuotes, setUsedQuotes] = useState([]);
 
   useEffect(() => {
     // Select a random quote when the app starts
@@ -15,11 +20,21 @@ export default function App() {
     setRandomQuote(quotes[randomIndex]);
   }, []);
 
+  useEffect(() => {
+    const leftQuotes = quotes.filter(quote => !usedQuotes.includes(quote));
+    const randomIndex = Math.floor(Math.random() * leftQuotes.length);
+    setRandomQuote(leftQuotes[randomIndex]);
+  }, [usedQuotes]);
+
+  onComplete = (sentence) => {
+    setUsedQuotes([...usedQuotes, sentence]);
+  }
+
   return (
     <GlobalProvider>
       <View style={styles.container}>
         <Text style={styles.title}>LetterQuest Game</Text>
-        <SentenceComponent sentence={randomQuote} />
+        <SentenceComponent sentence={randomQuote} onComplete={onComplete} />
         <StatusBar style="auto" />
       </View>
     </GlobalProvider>
@@ -29,7 +44,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#ddd',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -38,3 +53,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
+export default App;

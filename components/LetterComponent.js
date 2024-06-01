@@ -38,6 +38,10 @@ const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, 
     },
     isFocused: () => isComponentFocused,
     setLetter: (letter) => handleLetterInput(letter),
+    setInitialLetter: (letter) => {
+      setInput(letter);
+      setCorrect(true);
+    },
     isCorrect: () => correct === true,
   }));
 
@@ -46,7 +50,7 @@ const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, 
       setInput(letter);
       setCorrect(true);
       setIsComponentFocused(false);
-      if (onCorrect) onCorrect();
+      if (onCorrect) onCorrect(index);
     } else {
       setInput(letter);
       setCorrect(false);

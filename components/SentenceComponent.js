@@ -1,3 +1,4 @@
+import LottieView from 'lottie-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { I18nManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import colors from '../utils/colors';
@@ -5,10 +6,13 @@ import generateRandomNumbers from '../utils/generateRandomNumbers';
 import KeyboardComponent from './KeyboardComponent';
 import LetterComponent from './LetterComponent';
 I18nManager.forceRTL(true);
-const SentenceComponent = ({ sentence }) => {
+
+const SentenceComponent = ({ sentence, onComplete }) => {
   const [letterNumberMap, setLetterNumberMap] = useState({});
   const [focusedIndex, setFocusedIndex] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const letterRefs = useRef([]);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     setLetterNumberMap(generateRandomNumbers(sentence));
@@ -19,26 +23,33 @@ const SentenceComponent = ({ sentence }) => {
     setFocusedIndex(null); // Ensure no letter is focused initially
   }, [sentence]);
 
+  // useEffect(() => {
+  //   checkIfComplete();
+  // }, [letterRefs.current]);
+
   const setRandomCorrectLetters = () => {
-    const numHints = Math.ceil(sentence.replace(/ /g, '').length * 0.2); // 30% of the letters
+    const numHints = Math.ceil(sentence.replace(/ /g, '').length * 0.2); // 20% of the letters
     const indices = Array.from(Array(sentence.length).keys()).filter(i => sentence[i] !== ' ');
     const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
 
     shuffledIndices.forEach(index => {
       if (letterRefs.current[index]) {
-        letterRefs.current[index].setLetter(sentence[index]);
+        letterRefs.current[index].setInitialLetter(sentence[index]);
       }
     });
   };
 
-  const focusOnLetter = (index) => {
+  const focusOnNextLetter = (index) => {
+    console.log('focusOnNextLetter', index);
     const nextIndex = findNextIndex(index);
+    console.log('nextIndex', nextIndex);
     if (nextIndex !== -1) {
       setFocusedIndex(nextIndex);
       if (letterRefs.current[nextIndex] && letterRefs.current[nextIndex].focus) {
         letterRefs.current[nextIndex].focus();
       }
     }
+    checkIfComplete(index);
   };
 
   const findNextIndex = (currentIndex) => {
@@ -53,6 +64,26 @@ const SentenceComponent = ({ sentence }) => {
       }
     }
     return -1;
+  };
+
+  const checkIfComplete = (index) => {
+    console.log('checkIfComplete');
+    const lettersToCheck = letterRefs.current.filter((_, i) => index !== i);
+    lettersToCheck.forEach((ref, index) => {
+      console.log('ref', index, ref?.isCorrect());
+    });
+    if (lettersToCheck.every(ref => ref && ref.isCorrect())) {
+      handleSentenceComplete();
+    }
+  };
+
+  const handleSentenceComplete = () => {
+    setShowSuccess(true);
+    animationRef.current?.play();
+    setTimeout(() => {
+      setShowSuccess(false);
+      if (onComplete) onComplete(sentence);
+    }, 3000); // Display the animation for 3 seconds
   };
 
   const handleKeyPress = (letter) => {
@@ -81,7 +112,7 @@ const SentenceComponent = ({ sentence }) => {
                 expectedLetter={char}
                 number={letterNumberMap[lowerChar]}
                 isFocused={focusedIndex === index}
-                onCorrect={() => focusOnLetter(index)}
+                onCorrect={() => focusOnNextLetter(index)}
                 onFocus={() => setFocusedIndex(index)}
               />
             );
@@ -89,6 +120,15 @@ const SentenceComponent = ({ sentence }) => {
         </View>
       </ScrollView>
       <KeyboardComponent onPress={handleKeyPress} />
+      {showSuccess && (
+        <LottieView
+          ref={animationRef}
+          source={require('../assets/success.json')}
+          autoPlay
+          loop={false}
+          style={styles.animation}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };
@@ -114,6 +154,11 @@ const styles = StyleSheet.create({
   space: {
     width: 10,
     flexBasis: '100%',
+  },
+  animation: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
 });
 
