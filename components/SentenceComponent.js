@@ -28,7 +28,7 @@ const SentenceComponent = ({ onComplete }) => {
   }, [state.letters]);
 
   const setRandomCorrectLetters = () => {
-    const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * 0.2); // 20% of the letters
+    const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * 0.3); // 20% of the letters
     const indices = Array.from(Array(state.sentence.length).keys()).filter(i => state.sentence[i] !== ' ');
     const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
 
