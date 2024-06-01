@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Animated, StyleSheet, Text, TextInput, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
 
-const LetterComponent = ({ index, expectedLetter, number }) => {
+const LetterComponent = forwardRef(({ index, expectedLetter, number, onCorrect }, ref) => {
   const { submitLetter } = useContext(GlobalContext);
   const [input, setInput] = useState('');
   const [correct, setCorrect] = useState(null); // null, true, false
@@ -10,6 +10,7 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
   const shakeAnimation = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef(null);
+  const preventBlur = useRef(false);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -43,10 +44,17 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    handleSubmit();
+  }, [input]);
+
   const handleSubmit = () => {
+    if (!input) { return; }
+    console.log("submitting letter", index, input);
     if (input.toLowerCase() === expectedLetter.toLowerCase()) {
       setCorrect(true);
       setIsFocused(false);
+      onCorrect(index);
     } else {
       setCorrect(false);
       Animated.sequence([
@@ -57,6 +65,27 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
     submitLetter(index, input);
   };
 
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (!inputRef.current) { return; }
+      preventBlur.current = true;
+      console.log('focus', index);
+      inputRef.current.focus();
+      setTimeout(() => {
+        console.log('forcing focus', index);
+        inputRef.current.focus(); // Force the keyboard to open
+      }, 200); // Add a slight delay to ensure the input is focused
+    }
+  }));
+
+  const handleBlur = () => {
+    console.log('handleBlur', { preventBlur: preventBlur.current });
+    if (preventBlur.current) {
+      preventBlur.current = false;
+      return;
+    }
+    setIsFocused(false);
+  };
 
   return (
     <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
@@ -67,19 +96,11 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
             ref={inputRef}
             style={[styles.input, correct === false && styles.incorrectInput]}
             value={correct ? input : ''}
-            onChangeText={(input) => {
-              setInput(input);
-              handleSubmit();
-            }}
+            onChangeText={setInput}
             maxLength={1}
             cursorColor="transparent"
-            onFocus={() => {
-              console.log("setting focus to true", index);
-              setIsFocused(true)
-            }}
-            onBlur={() => {
-              setIsFocused(false)
-            }}
+            onFocus={() => setIsFocused(true)}
+            onBlur={handleBlur}
           />
         }
         <View style={styles.line} />
@@ -88,7 +109,7 @@ const LetterComponent = ({ index, expectedLetter, number }) => {
     </Animated.View>
 
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
