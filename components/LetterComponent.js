@@ -33,6 +33,9 @@ const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, 
     focus: () => {
       setIsComponentFocused(true);
     },
+    blur: () => {
+      setIsComponentFocused(false);
+    },
     isFocused: () => isComponentFocused,
     setLetter: (letter) => handleLetterInput(letter),
     isCorrect: () => correct === true,

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { I18nManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import colors from '../utils/colors';
 import generateRandomNumbers from '../utils/generateRandomNumbers';
 import KeyboardComponent from './KeyboardComponent';
 import LetterComponent from './LetterComponent';
-
+I18nManager.forceRTL(true);
 const SentenceComponent = ({ sentence }) => {
   const [letterNumberMap, setLetterNumberMap] = useState({});
   const [focusedIndex, setFocusedIndex] = useState(null);
@@ -12,7 +12,24 @@ const SentenceComponent = ({ sentence }) => {
 
   useEffect(() => {
     setLetterNumberMap(generateRandomNumbers(sentence));
+    setRandomCorrectLetters();
+    letterRefs.current.forEach(ref => {
+      if (ref) ref.blur();
+    });
+    setFocusedIndex(null); // Ensure no letter is focused initially
   }, [sentence]);
+
+  const setRandomCorrectLetters = () => {
+    const numHints = Math.ceil(sentence.replace(/ /g, '').length * 0.2); // 30% of the letters
+    const indices = Array.from(Array(sentence.length).keys()).filter(i => sentence[i] !== ' ');
+    const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
+
+    shuffledIndices.forEach(index => {
+      if (letterRefs.current[index]) {
+        letterRefs.current[index].setLetter(sentence[index]);
+      }
+    });
+  };
 
   const focusOnLetter = (index) => {
     const nextIndex = findNextIndex(index);
@@ -89,7 +106,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   sentenceContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     flexWrap: 'wrap',
     justifyContent: 'center',
     padding: 10,
