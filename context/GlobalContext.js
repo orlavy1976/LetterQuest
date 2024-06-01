@@ -1,18 +1,40 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 
-// Create the context
+const initialState = {
+  letters: {},
+  usedQuotes: [],
+  randomQuote: ''
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_LETTER':
+      return {
+        ...state,
+        letters: { ...state.letters, [action.index]: action.letter }
+      };
+    case 'SET_USED_QUOTES':
+      return {
+        ...state,
+        usedQuotes: [...state.usedQuotes, action.quote]
+      };
+    case 'SET_RANDOM_QUOTE':
+      return {
+        ...state,
+        randomQuote: action.quote
+      };
+    default:
+      return state;
+  }
+};
+
 export const GlobalContext = createContext();
 
-// Create the provider component
 export const GlobalProvider = ({ children }) => {
-  const [letters, setLetters] = useState({});
-
-  const submitLetter = (index, letter) => {
-    setLetters(prevLetters => ({ ...prevLetters, [index]: letter }));
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <GlobalContext.Provider value={{ letters, submitLetter }}>
+    <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
     </GlobalContext.Provider>
   );

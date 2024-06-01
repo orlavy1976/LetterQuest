@@ -4,7 +4,7 @@ import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 
 const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, onCorrect, onFocus }, ref) => {
-  const { submitLetter } = useContext(GlobalContext);
+  const { dispatch } = useContext(GlobalContext);
   const [input, setInput] = useState('');
   const [correct, setCorrect] = useState(null); // null, true, false
   const [isComponentFocused, setIsComponentFocused] = useState(false);
@@ -62,7 +62,7 @@ const LetterComponent = forwardRef(({ index, expectedLetter, number, isFocused, 
         Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver: true }),
       ]).start();
     }
-    submitLetter(index, letter);
+    dispatch({ type: 'SET_LETTER', index, letter });
   };
 
   return (

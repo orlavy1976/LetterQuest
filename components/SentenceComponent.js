@@ -1,13 +1,16 @@
 import LottieView from 'lottie-react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { I18nManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 import generateRandomNumbers from '../utils/generateRandomNumbers';
 import KeyboardComponent from './KeyboardComponent';
 import LetterComponent from './LetterComponent';
+
 I18nManager.forceRTL(true);
 
 const SentenceComponent = ({ sentence, onComplete }) => {
+  const { state, dispatch } = useContext(GlobalContext);
   const [letterNumberMap, setLetterNumberMap] = useState({});
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -15,6 +18,7 @@ const SentenceComponent = ({ sentence, onComplete }) => {
   const animationRef = useRef(null);
 
   useEffect(() => {
+    console.log("sentence", sentence);
     setLetterNumberMap(generateRandomNumbers(sentence));
     setRandomCorrectLetters();
     letterRefs.current.forEach(ref => {
@@ -36,9 +40,7 @@ const SentenceComponent = ({ sentence, onComplete }) => {
   };
 
   const focusOnNextLetter = (index) => {
-    console.log('focusOnNextLetter', index);
     const nextIndex = findNextIndex(index);
-    console.log('nextIndex', nextIndex);
     if (nextIndex !== -1) {
       setFocusedIndex(nextIndex);
       if (letterRefs.current[nextIndex] && letterRefs.current[nextIndex].focus) {
@@ -63,11 +65,7 @@ const SentenceComponent = ({ sentence, onComplete }) => {
   };
 
   const checkIfComplete = (index) => {
-    console.log('checkIfComplete');
     const lettersToCheck = letterRefs.current.filter((_, i) => index !== i);
-    lettersToCheck.forEach((ref, index) => {
-      console.log('ref', index, ref?.isCorrect());
-    });
     if (lettersToCheck.every(ref => ref && ref.isCorrect())) {
       handleSentenceComplete();
     }
@@ -85,6 +83,7 @@ const SentenceComponent = ({ sentence, onComplete }) => {
   const handleKeyPress = (letter) => {
     if (focusedIndex !== null && letterRefs.current[focusedIndex]) {
       letterRefs.current[focusedIndex].setLetter(letter);
+      dispatch({ type: 'SET_LETTER', index: focusedIndex, letter });
     }
   };
 

@@ -1,37 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SentenceComponent from './components/SentenceComponent';
-import { GlobalProvider } from './context/GlobalContext';
+import { GlobalContext, GlobalProvider } from './context/GlobalContext';
 import quotes from './utils/quotes';
 
 function App() {
-  const [randomQuote, setRandomQuote] = useState('');
-  const [usedQuotes, setUsedQuotes] = useState([]);
+  const { state, dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * quotes.length);
-    setRandomQuote(quotes[randomIndex]);
-  }, []);
+    dispatch({ type: 'SET_RANDOM_QUOTE', quote: quotes[randomIndex] });
+  }, [dispatch]);
 
   useEffect(() => {
-    const leftQuotes = quotes.filter(quote => !usedQuotes.includes(quote));
+    const leftQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
     const randomIndex = Math.floor(Math.random() * leftQuotes.length);
-    setRandomQuote(leftQuotes[randomIndex]);
-  }, [usedQuotes]);
+    dispatch({ type: 'SET_RANDOM_QUOTE', quote: leftQuotes[randomIndex] });
+  }, [state.usedQuotes, dispatch]);
 
-  onComplete = (sentence) => {
-    setUsedQuotes([...usedQuotes, sentence]);
+  const onComplete = (sentence) => {
+    dispatch({ type: 'SET_USED_QUOTES', quote: sentence });
   }
 
   return (
-    <GlobalProvider>
-      <View style={styles.container}>
-        <Text style={styles.title}>LetterQuest Game</Text>
-        <SentenceComponent sentence={randomQuote} onComplete={onComplete} />
-        <StatusBar style="auto" />
-      </View>
-    </GlobalProvider>
+    <View style={styles.container}>
+      <Text style={styles.title}>LetterQuest Game</Text>
+      <SentenceComponent sentence={state.randomQuote} onComplete={onComplete} />
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
@@ -48,4 +45,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default () => (
+  <GlobalProvider>
+    <App />
+  </GlobalProvider>
+);
