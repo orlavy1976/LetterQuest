@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'; // Import Text
 import SentenceComponent from './components/SentenceComponent';
 import { GlobalContext, GlobalProvider } from './context/GlobalContext';
+import colors from './utils/colors'; // Import colors
 import quotes from './utils/quotes';
 
 function App() {
@@ -25,9 +26,9 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>LetterQuest Game</Text>
+      <StatusBar style="auto" backgroundColor={colors.primary} />
+      <Text style={styles.title}>Letter Quest</Text>
       <SentenceComponent onComplete={onComplete} />
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -35,13 +36,15 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ddd',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.background, // Ensure background color is set
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    marginTop: 30,
+    color: colors.primary, // Use primary color for the title
   },
 });
 
