@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     flexShrink: 1, // Prevent words from breaking between lines
   },
   space: {
-    width: 10,
-    flexBasis: 10, // Ensure the space only takes the necessary width
+    width: 30,
+    flexBasis: 30, // Ensure the space only takes the necessary width
     flexShrink: 0, // Prevent the space from shrinking and causing line breaks
   },
   animation: {

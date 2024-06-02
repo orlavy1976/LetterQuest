@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   wordContainer: {
     flexDirection: 'row',
     marginHorizontal: 5,
+    marginBottom: 10,
   },
 });
 

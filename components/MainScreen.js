@@ -42,7 +42,7 @@ const MainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" backgroundColor={colors.primary} />
-      <Text style={styles.title}>Letter Quest</Text>
+      <Text style={styles.title}>אתגר האותיות</Text>
       <SentenceComponent onComplete={onComplete} />
     </View>
   );

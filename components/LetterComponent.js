@@ -56,9 +56,8 @@ const LetterComponent = ({ index, number, isFocused }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    margin: 5,
-    padding: 5,
-    borderRadius: 5,
+    margin: 0,
+    padding: 10,
     backgroundColor: '#FFE4C4', // A warm, light beige
   },
   focusedContainer: {
