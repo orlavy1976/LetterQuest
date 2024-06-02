@@ -19,7 +19,7 @@ const SentenceComponent = ({ onComplete }) => {
     console.log('SentenceComponent useEffect', state.sentence);
     setLetterNumberMap(generateRandomNumbers(state.sentence));
     setRandomCorrectLetters();
-  }, [state.sentence]);
+  }, [state.sentence, state.difficulty]);
 
   useEffect(() => {
     if (!state.letters) return;
@@ -28,7 +28,14 @@ const SentenceComponent = ({ onComplete }) => {
   }, [state.letters]);
 
   const setRandomCorrectLetters = () => {
-    const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * 0.3); // 20% of the letters
+    const difficultyMap = {
+      easy: 0.5,
+      medium: 0.35,
+      hard: 0.2,
+    };
+    let numHintsPercentage = difficultyMap[state.difficulty] || 0.3;
+
+    const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * numHintsPercentage); // 20% of the letters
     const indices = Array.from(Array(state.sentence.length).keys()).filter(i => state.sentence[i] !== ' ');
     const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
 

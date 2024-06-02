@@ -9,6 +9,7 @@ const SettingsScreen = ({ navigation }) => {
 
   const handleDifficultyChange = (difficulty) => {
     dispatch({ type: 'SET_DIFFICULTY', difficulty });
+    dispatch({ type: 'SET_SENTENCE', sentence: state.sentence });
   };
 
   return (
