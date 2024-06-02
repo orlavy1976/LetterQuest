@@ -16,7 +16,6 @@ const SentenceComponent = ({ onComplete }) => {
   const animationRef = useRef(null);
 
   useEffect(() => {
-    console.log('SentenceComponent useEffect', state.sentence);
     setLetterNumberMap(generateRandomNumbers(state.sentence));
     setRandomCorrectLetters();
   }, [state.sentence, state.difficulty]);
@@ -98,9 +97,8 @@ const SentenceComponent = ({ onComplete }) => {
       <WordComponent
         key={wordIndex}
         word={word}
-        wordIndex={state.sentence.indexOf(word)}
+        wordIndex={state.sentence.indexOf(word, wordIndex)}
         letterNumberMap={letterNumberMap}
-        focusedIndex={state.focusedIndex}
       />
     ));
   };

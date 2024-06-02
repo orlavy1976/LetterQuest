@@ -3,11 +3,11 @@ import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 
-const LetterComponent = ({ index, number, isFocused }) => {
+const LetterComponent = ({ index, number }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
   const { correct, letter } = state.letters[index];
-
+  const isFocused = state.focusedIndex === index;
   useEffect(() => {
     let timer;
     if (correct === false) {

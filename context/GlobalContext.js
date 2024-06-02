@@ -50,6 +50,7 @@ const reducer = (state, action) => {
         letterOccurrences: updatedOccurrences,
       };
     case 'SET_FOCUSED_INDEX':
+      console.log('SET_FOCUSED_INDEX', action.index);
       return {
         ...state,
         focusedIndex: action.index,

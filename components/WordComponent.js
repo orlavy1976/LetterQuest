@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LetterComponent from './LetterComponent';
 
-const WordComponent = ({ word, wordIndex, letterNumberMap, focusedIndex }) => {
+const WordComponent = ({ word, wordIndex, letterNumberMap }) => {
   return (
     <View style={styles.wordContainer}>
       {word.split('').map((char, index) => {
@@ -12,7 +12,6 @@ const WordComponent = ({ word, wordIndex, letterNumberMap, focusedIndex }) => {
             key={globalIndex}
             index={globalIndex}
             number={letterNumberMap[char.toLowerCase()]}
-            isFocused={focusedIndex === globalIndex}
           />
         );
       })}
