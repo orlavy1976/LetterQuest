@@ -15,20 +15,26 @@
       "supportsTablet": true
     },
     "android": {
+      "supportsRTL": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.orlavy.LetterQuest",
-      "versionCode": 10
+      "versionCode": 11
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
+      "supportsRTL": true,
+      "forcesRTL": true,
       "eas": {
         "projectId": "368cd7aa-6483-47ee-a223-69bd662ae2ea"
       }
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

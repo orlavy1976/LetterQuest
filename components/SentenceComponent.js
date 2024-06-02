@@ -37,7 +37,6 @@ const SentenceComponent = ({ onComplete }) => {
     const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * numHintsPercentage); // 20% of the letters
     const indices = Array.from(Array(state.sentence.length).keys()).filter(i => state.sentence[i] !== ' ');
     const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints).sort((a, b) => a < b ? -1 : 1);
-    console.log('shuffledIndices', { numHintsPercentage, numHints, shuffledIndices, indices });
     shuffledIndices.forEach(index => {
       dispatch({ type: 'SET_LETTER', index, letter: state.sentence[index], correct: true });
     });
@@ -45,7 +44,6 @@ const SentenceComponent = ({ onComplete }) => {
 
   const focusOnNextLetter = (index) => {
     const nextIndex = findNextIndex(index);
-    console.log('focusOnNextLetter', index, nextIndex);
     if (nextIndex !== -1) {
       dispatch({ type: 'SET_FOCUSED_INDEX', index: nextIndex });
     }
@@ -73,7 +71,6 @@ const SentenceComponent = ({ onComplete }) => {
   };
 
   const handleSentenceComplete = () => {
-    console.log('handleSentenceComplete');
     setShowSuccess(true);
     animationRef.current?.play();
     setTimeout(() => {

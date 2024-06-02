@@ -1,13 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { I18nManager } from 'react-native';
 import ErrorBoundary from './components/ErrorBoundary';
 import MainScreen from './components/MainScreen';
 import SettingsScreen from './components/SettingsScreen';
 import { GlobalProvider } from './context/GlobalContext';
 import colors from './utils/colors';
-I18nManager.forceRTL(true);
 
 const Stack = createStackNavigator();
 

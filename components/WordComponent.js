@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginBottom: 10,
   },
+
 });
 
 export default WordComponent;
