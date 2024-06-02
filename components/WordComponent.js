@@ -22,7 +22,7 @@ const WordComponent = ({ word, wordIndex, letterNumberMap, focusedIndex }) => {
 
 const styles = StyleSheet.create({
   wordContainer: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     marginHorizontal: 5,
   },
 });

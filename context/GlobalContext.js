@@ -7,6 +7,7 @@ const initialState = {
   focusedIndex: null,
   usedQuotes: [],
   letterOccurrences: {},
+  difficulty: 'easy',
 };
 
 const reducer = (state, action) => {
@@ -32,7 +33,6 @@ const reducer = (state, action) => {
         letterOccurrences
       };
     case 'SET_LETTER':
-      console.log('SET_LETTER', action);
       const updatedOccurrences = { ...state.letterOccurrences };
       if (action.correct) {
         updatedOccurrences[action.letter.toLowerCase()]--;
@@ -55,12 +55,19 @@ const reducer = (state, action) => {
         focusedIndex: action.index,
       };
     case 'SET_USED_QUOTES':
-      const updatedUsedQuotes = [...state.usedQuotes, action.quote];
-      AsyncStorage.setItem('usedQuotes', JSON.stringify(updatedUsedQuotes)); // Save to AsyncStorage
-
       return {
         ...state,
-        usedQuotes: updatedUsedQuotes,
+        usedQuotes: [...state.usedQuotes, action.quote],
+      };
+    case 'SET_DIFFICULTY':
+      return {
+        ...state,
+        difficulty: action.difficulty,
+      };
+    case 'INITIALIZE_STATE':
+      return {
+        ...state,
+        ...action.state,
       };
     default:
       return state;
@@ -73,19 +80,29 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const loadUsedQuotes = async () => {
+    const loadState = async () => {
       try {
-        const storedUsedQuotes = await AsyncStorage.getItem('usedQuotes');
-        console.log('storedUsedQuotes', storedUsedQuotes);
-        if (storedUsedQuotes) {
-          dispatch({ type: 'INITIALIZE_USED_QUOTES', usedQuotes: JSON.parse(storedUsedQuotes) });
+        const storedState = await AsyncStorage.getItem('appState');
+        if (storedState) {
+          dispatch({ type: 'INITIALIZE_STATE', state: JSON.parse(storedState) });
         }
       } catch (error) {
-        console.error('Failed to load used quotes from storage', error);
+        console.error('Failed to load state from storage', error);
       }
     };
-    loadUsedQuotes();
+    loadState();
   }, []);
+
+  useEffect(() => {
+    const saveState = async () => {
+      try {
+        await AsyncStorage.setItem('appState', JSON.stringify(state));
+      } catch (error) {
+        console.error('Failed to save state to storage', error);
+      }
+    };
+    saveState();
+  }, [state]);
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

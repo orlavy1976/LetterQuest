@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   sentenceContainer: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     padding: 10,
