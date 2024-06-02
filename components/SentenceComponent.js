@@ -36,8 +36,8 @@ const SentenceComponent = ({ onComplete }) => {
 
     const numHints = Math.ceil(state.sentence.replace(/ /g, '').length * numHintsPercentage); // 20% of the letters
     const indices = Array.from(Array(state.sentence.length).keys()).filter(i => state.sentence[i] !== ' ');
-    const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints);
-
+    const shuffledIndices = indices.sort(() => 0.5 - Math.random()).slice(0, numHints).sort((a, b) => a < b ? -1 : 1);
+    console.log('shuffledIndices', { numHintsPercentage, numHints, shuffledIndices, indices });
     shuffledIndices.forEach(index => {
       dispatch({ type: 'SET_LETTER', index, letter: state.sentence[index], correct: true });
     });
