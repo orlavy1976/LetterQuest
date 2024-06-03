@@ -3,7 +3,7 @@ const colors = {
   primaryVariant: '#FF3D00', // A more intense red
   secondary: '#FFD700', // A vivid yellow
   secondaryVariant: '#FFD190', // A bright orange
-  background: '#FFF8E1', // A light, warm cream
+  background: '#f7ecd2', // A light, warm cream
   surface: '#FFE4C4', // A warm, light beige
   error: '#D32F2F',
   onPrimary: '#FFFFFF',

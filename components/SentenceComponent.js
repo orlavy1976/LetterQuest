@@ -1,6 +1,6 @@
 import LottieView from 'lottie-react-native';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { I18nManager, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { I18nManager, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { GlobalContext } from '../context/GlobalContext';
 import colors from '../utils/colors';
 import generateRandomNumbers from '../utils/generateRandomNumbers';
@@ -105,6 +105,8 @@ const SentenceComponent = ({ onComplete }) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <Image source={require('../assets/bulb.webp')} style={styles.bulb} />
+      <Image source={require('../assets/question.webp')} style={styles.question} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.sentenceContainer}>
           {renderSentence()}
@@ -126,6 +128,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  bulb: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    top: 280,
+    transform: [{ rotate: '15deg' }]
+  },
+  question: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    top: -80,
+    right: 10,
+    transform: [{ rotate: '-15deg' }]
   },
   scrollViewContent: {
     flexGrow: 1,
