@@ -58,10 +58,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 0,
     padding: 10,
-    backgroundColor: '#FFE4C4', // A warm, light beige
   },
   focusedContainer: {
-    backgroundColor: '#FFCC80', // A brighter color for focused state
+    backgroundColor: colors.letterFocused
   },
   input: {
     height: 20,

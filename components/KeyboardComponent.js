@@ -5,8 +5,8 @@ import colors from '../utils/colors';
 import KeyboardLetterComponent from './KeyboardLetterComponent';
 
 const letters = [
-  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
-  ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
+  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ', 'ף'],
+  ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך'],
   ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ']
 ];
 
@@ -34,7 +34,6 @@ const KeyboardComponent = ({ onPress }) => {
 const styles = StyleSheet.create({
   keyboard: {
     padding: 10,
-    backgroundColor: colors.background,
     borderTopWidth: 1,
     borderTopColor: colors.onSurface,
   },

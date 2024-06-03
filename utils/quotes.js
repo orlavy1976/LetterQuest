@@ -29,6 +29,45 @@ const quotes = [
   "כי האדם עץ השדה", // Deuteronomy 20:19
   "על כל פשעים תכסה אהבה", // Proverbs 10:12
   "החיים הם כמו גלגל לפעמים למעלה ולפעמים למטה", // Thought Leader
+  "ידע הוא כוח", // Francis Bacon
+  "מעשים מדברים בקול רם יותר ממילים", // Proverb
+  "חיוך הוא הדרך הקצרה ביותר בין שני אנשים", // Victor Borge
+  "החיים הם מתנה נהדר להעריך כל יום", // Thought Leader
+  "הדרך הכי טובה להתחיל היא להפסיק לדבר ולהתחיל לעשות", // Walt Disney
+  "הצלחה היא מסע לא יעד", // Thought Leader
+  "כל התחלה קשה אבל הסוף מתוק", // Hebrew Proverb
+  "האהבה היא הכוח החזק ביותר בעולם", // Mahatma Gandhi
+  "החיים הם לא מספר הימים אלא איכותם", // Thought Leader
+  "הכל מתחיל בחלום", // Thought Leader
+  "אין דבר חזק כמו רצון טוב", // Hebrew Proverb
+  "האדם שולט במחשבתו", // Thought Leader
+  "הסבלנות היא מעלה", // Proverb
+  "ידעתי את האושר כשהייתי עם משפחתי", // Thought Leader
+  "הלמידה היא מסע שנמשך כל החיים", // Thought Leader
+  "אהבת חברים חזקה כמו אהבת אחים", // Thought Leader
+  "תן לאהבה להוביל את דרכך", // Thought Leader
+  "כל מה שאתה צריך זה אהבה", // Beatles
+  "רק האמיצים מעזים לחלום", // Thought Leader
+  "ההצלחה היא תוצאה של התמדה", // Thought Leader
+  "היום הוא יום חדש הזדמנות חדשה", // Thought Leader
+  "המפתח להצלחה הוא נחישות", // Thought Leader
+  "אל תפסיק להאמין", // Journey
+  "תקווה היא הכוח שנותן חיים", // Thought Leader
+  "בכל יום יש משהו טוב", // Thought Leader
+  "אהבה היא התשובה", // John Lennon
+  "החיים הם מסע לא יעד", // Thought Leader
+  "לאהוב זה לחיות", // Thought Leader
+  "החיים הם כמו שיר תן להם להתנגן", // Thought Leader
+  "הדמיון הוא הכוח ליצור עתיד טוב יותר", // Thought Leader
+  "התמדה היא מפתח להצלחה", // Thought Leader
+  "האושר הוא בתוכך", // Thought Leader
+  "חופש הוא הזכות הגדולה ביותר", // Thought Leader
+  "תודה על מה שיש לך ותהיה מאושר", // Thought Leader
+  "אהבה היא המפתח לכל דבר", // Thought Leader
+  "תמיד תזכור מי אתה", // Thought Leader
+  "העולם שייך לאמיצים", // Thought Leader
+  "החיים יפים תהנה מהם", // Thought Leader
+  "האמונה היא הכוח שמניע אותנו", // Thought Leader
 ];
 
 export default quotes;
