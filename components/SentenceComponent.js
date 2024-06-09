@@ -90,14 +90,20 @@ const SentenceComponent = ({ onComplete }) => {
   };
 
   const renderSentence = () => {
-    return state.sentence.split(' ').map((word, wordIndex) => (
-      <WordComponent
-        key={wordIndex}
-        word={word}
-        wordIndex={state.sentence.indexOf(word, wordIndex)}
-        letterNumberMap={letterNumberMap}
-      />
-    ));
+    const words = state.sentence.split(' ');
+    let startIndex = 0;
+    return words.map((word, index) => {
+      const wordIndex = state.sentence.indexOf(word, startIndex);
+      startIndex += word.length + 1;
+      return (
+        <WordComponent
+          key={index}
+          word={word}
+          wordIndex={wordIndex}
+          letterNumberMap={letterNumberMap}
+        />
+      )
+    });
   };
 
   return (
