@@ -20,7 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.orlavy.LetterQuest",
-      "versionCode": 17
+      "versionCode": 18
     },
     "web": {
       "favicon": "./assets/favicon.png"

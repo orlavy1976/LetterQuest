@@ -10,7 +10,7 @@ const quotes = [
   "קשה יש רק בלחם וגם אותו אוכלים", // Israeli Saying
   "ואהבת לרעך כמוך", // Leviticus 19:18
   "אלוהים נמצא בפרטים הקטנים", // Ludwig Mies van der Rohe
-  "ברצות ה דרכי איש גם אויביו ישלים איתו", // Proverbs 16:7
+  "ברצות ה' דרכי איש גם אויביו ישלים איתו", // Proverbs 16:7
   "אין דבר קבוע חוץ מהשינוי עצמו", // Heraclitus
   "איזהו חכם הלומד מכל אדם", // Pirkei Avot
   "כי הנה הסתיו עבר הגשם חלף הלך לו", // Song of Songs 2:11
@@ -68,6 +68,37 @@ const quotes = [
   "העולם שייך לאמיצים", // Thought Leader
   "החיים יפים תהנה מהם", // Thought Leader
   "האמונה היא הכוח שמניע אותנו", // Thought Leader
+  "מוזיקה היא המפתח לנפש", // Thought Leader
+  "האומץ לחיות טמון בעשיית דברים שאתה מפחד מהם", // Thought Leader
+  "החיים הם במה, וכל העולם הוא הצגה", // William Shakespeare
+  "העולם הוא שלך תעשה איתו מה שתבחר", // Thought Leader
+  "תן לדמיון שלך לעוף", // Thought Leader
+  "אם תאמין שאתה יכול, אתה כבר חצי הדרך לשם", // Theodore Roosevelt
+  "השינוי מתחיל בך", // Thought Leader
+  "כשהחיים נותנים לך לימונים, תעשה מהם לימונדה", // Proverb
+  "כל דבר מתחיל עם חלום קטן", // Thought Leader
+  "העתיד שייך לאלה שמאמינים ביופיים של חלומותיהם", // Eleanor Roosevelt
+  "אהבה היא הכוח המניע של היקום", // Thought Leader
+  "החיים הם כמו מסע לא יעד", // Thought Leader
+  "תן לאור שלך לזהור", // Thought Leader
+  "התמדה היא הדרך להצלחה", // Thought Leader
+  "אל תפסיק לחייך", // Thought Leader
+  "החיים הם יצירה, תעשה מהם משהו יפה", // Thought Leader
+  "האושר הוא לא יעד הוא דרך חיים", // Thought Leader
+  "אהבה היא תשובה לכל השאלות", // Thought Leader
+  "החיים הם ספר אתה הכותב", // Thought Leader
+  "תחיה את הרגע", // Thought Leader
+  "תקווה היא הכוח שמניע אותנו", // Thought Leader
+  "אין דבר חשוב יותר מאהבה", // Thought Leader
+  "הדרך להצלחה היא לעולם לא לוותר", // Thought Leader
+  "אמונה היא הכוח שמחזיק אותנו", // Thought Leader
+  "לעולם לא תדע עד שלא תנסה", // Thought Leader
+  "החיים הם כמו רכבת הרים תיהנה מהנסיעה", // Thought Leader
+  "כל רגע הוא הזדמנות חדשה", // Thought Leader
+  "אהבה היא האור שמוביל אותנו", // Thought Leader
+  "החיים הם מה שאתה עושה מהם", // Thought Leader
+  "תן לאהבה להוביל את דרכך", // Thought Leader
+  "החיים הם כמו פאזל כל חלק חשוב" // Thought Leader
 ];
 
 export default quotes;
