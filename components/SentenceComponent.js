@@ -137,17 +137,17 @@ const styles = StyleSheet.create({
   },
   bulb: {
     position: 'absolute',
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     top: 280,
     transform: [{ rotate: '15deg' }]
   },
   question: {
     zIndex: 1,
     position: 'absolute',
-    width: 70,
-    height: 70,
-    top: -120,
+    width: 60,
+    height: 60,
+    top: -100,
     right: 10,
     transform: [{ rotate: '-15deg' }]
   },
@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: 10,
-    paddingTop: 30,
-    paddingBottom: 100,
+    paddingTop: 10,
+    paddingBottom: 50,
   },
 
   sentenceContainer: {

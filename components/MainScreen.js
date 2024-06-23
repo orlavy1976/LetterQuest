@@ -36,13 +36,23 @@ const MainScreen = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Icon
-          name="settings"
-          size={25}
-          color={colors.onPrimary}
-          style={{ marginRight: 15 }}
-          onPress={() => navigation.navigate('Settings')}
-        />
+        <View style={styles.statusbarActions}>
+
+          <Icon
+            name="refresh"
+            size={25}
+            color={colors.onPrimary}
+            style={{ marginRight: 15 }}
+            onPress={() => selectNewSentence()}
+          />
+          <Icon
+            name="settings"
+            size={25}
+            color={colors.onPrimary}
+            style={{ marginRight: 15 }}
+            onPress={() => navigation.navigate('Settings')}
+          />
+        </View>
       ),
     });
   }, [navigation]);
@@ -62,6 +72,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background,
+  },
+  statusbarActions: {
+    flexDirection: 'row',
   },
   title: {
     zIndex: 10,
