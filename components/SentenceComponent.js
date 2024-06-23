@@ -112,7 +112,7 @@ const SentenceComponent = ({ onComplete }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Image source={require('../assets/bulb.webp')} style={styles.bulb} />
-      <Image source={require('../assets/question.webp')} style={styles.question} />
+      <Image source={require('../assets/question.jpg')} style={styles.question} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.sentenceContainer}>
           {renderSentence()}
@@ -137,16 +137,17 @@ const styles = StyleSheet.create({
   },
   bulb: {
     position: 'absolute',
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     top: 280,
     transform: [{ rotate: '15deg' }]
   },
   question: {
+    zIndex: 1,
     position: 'absolute',
-    width: 80,
-    height: 80,
-    top: -80,
+    width: 70,
+    height: 70,
+    top: -120,
     right: 10,
     transform: [{ rotate: '-15deg' }]
   },

@@ -11,18 +11,26 @@ const MainScreen = ({ navigation }) => {
   const { state, dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    dispatch({ type: 'SET_SENTENCE', sentence: quotes[randomIndex] });
-  }, [dispatch]);
-
-  useEffect(() => {
-    const leftQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
-    const randomIndex = Math.floor(Math.random() * leftQuotes.length);
-    dispatch({ type: 'SET_SENTENCE', sentence: leftQuotes[randomIndex] });
+    if (!state.sentence) {
+      selectNewSentence();
+    }
   }, [state.usedQuotes, dispatch]);
 
+  const selectNewSentence = () => {
+    const availableQuotes = quotes.filter(quote => !state.usedQuotes.includes(quote));
+    if (availableQuotes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableQuotes.length);
+      dispatch({ type: 'SET_SENTENCE', sentence: availableQuotes[randomIndex] });
+    } else {
+      console.log("All quotes have been solved!");
+    }
+  };
+
   const onComplete = (sentence) => {
-    dispatch({ type: 'SET_USED_QUOTES', quote: sentence });
+    if (!state.usedQuotes.includes(sentence)) {
+      dispatch({ type: 'SET_USED_QUOTES', quote: sentence });
+    }
+    selectNewSentence();
   };
 
   React.useLayoutEffect(() => {
@@ -56,6 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   title: {
+    zIndex: 10,
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
